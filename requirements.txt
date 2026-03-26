@@ -1,3 +1,4 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
 streamlit
 langchain
 langchain-community
@@ -8,3 +9,4 @@ transformers
 pypdf
 sentence-transformers
 torch
+sentencepiece
