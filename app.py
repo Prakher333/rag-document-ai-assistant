@@ -23,21 +23,24 @@ st.markdown("""
 <div class="footer">Built using Streamlit + LangChain + HuggingFace</div>
 """, unsafe_allow_html=True)
 
-# Initialize Session State
-if "rag" not in st.session_state:
-    st.session_state.rag = None
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
 @st.cache_resource
 def get_rag_pipeline():
     """Load the HuggingFace models only once using Streamlit cache"""
     return RAGPipeline()
 
+# Initialize Session State
+if "rag" not in st.session_state:
+    st.session_state.rag = get_rag_pipeline()
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 # --- UI Sidebar ---
 with st.sidebar:
     st.header("📄 Document Upload")
     pdf_file = st.file_uploader("Upload your Mining Document (PDF)", type=["pdf"])
+
+    if st.session_state.rag.vector_db is not None:
+        st.success("✅ Loaded existing processed document from disk.")
     
     if st.button("Process Document"):
         if pdf_file is not None:

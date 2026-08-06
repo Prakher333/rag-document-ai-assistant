@@ -1,17 +1,19 @@
 # ⛏️ Mining Knowledge AI Assistant (RAG + LLM)
 
-An AI-powered document question answering system built using **Retrieval-Augmented Generation (RAG)** and **Streamlit**.
-The system enables users to upload mining engineering documents (PDF format), extract text chunks, generate vector embeddings, and interactively ask questions with context-backed AI answers.
+An AI-powered document question answering system built using **Retrieval-Augmented Generation (RAG)**, **Jupyter Notebook**, and **Streamlit**.
+The system enables users to upload mining engineering documents (PDF format), extract text chunks, generate vector embeddings with persistent disk storage, and interactively ask questions with context-backed AI answers.
 
 ---
 
 ## 🌟 Key Features
 
-* **Interactive Streamlit Web Interface**: User-friendly UI for uploading PDFs and asking questions in real time.
+* **Jupyter Notebook Interface (`main.ipynb`)**: Complete notebook workflow for experimentations, document processing, and RAG execution.
+* **Interactive Streamlit Web Interface (`app.py`)**: User-friendly UI for uploading PDFs and asking questions in real time.
+* **Vector Store Persistence**: Automatically persists local **FAISS** vector indexes to disk for faster re-indexing.
 * **Document Processing & Chunking**: Extracts text from PDFs and splits it into manageable chunks using LangChain text splitters.
-* **Semantic Vector Search**: Utilizes HuggingFace `sentence-transformers/all-MiniLM-L6-v2` embeddings stored in a local **FAISS** vector database.
+* **Semantic Vector Search**: Utilizes HuggingFace `sentence-transformers/all-MiniLM-L6-v2` embeddings.
 * **Context-Aware LLM Answering**: Leverages Google's `flan-t5-base` model to generate concise, accurate answers grounded in document context.
-* **Source Transparency**: Displays exact retrieved context chunks for each answer to ensure verification and prevent hallucinations.
+* **Source Transparency**: Displays exact retrieved context chunks for each answer to ensure verification.
 
 ---
 
@@ -24,20 +26,21 @@ The system enables users to upload mining engineering documents (PDF format), ex
           ↓
 [ HuggingFace Embeddings ] (all-MiniLM-L6-v2)
           ↓
-[ FAISS Vector Store ]
+[ FAISS Vector Store ] ──(Persist/Load)──> [ Disk: vector_store/ ]
           ↓
 [ Similarity Search ] (Top-5 relevant chunks)
           ↓
 [ FLAN-T5 LLM QA Pipeline ]
           ↓
-[ Streamlit Interactive Response + Context Expander ]
+[ Interactive Response / Streamlit UI / Jupyter Notebook ]
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend / UI**: Streamlit
+* **Notebook**: Jupyter (`main.ipynb`)
+* **Frontend / UI**: Streamlit (`app.py`)
 * **RAG Framework**: LangChain (`langchain`, `langchain-community`, `langchain-huggingface`)
 * **Vector DB**: FAISS (`faiss-cpu`)
 * **Embeddings & LLM**: HuggingFace Transformers (`sentence-transformers/all-MiniLM-L6-v2`, `google/flan-t5-base`)
@@ -54,7 +57,6 @@ cd rag-document-ai-assistant
 ```
 
 ### 2. Install Dependencies
-It is recommended to use a virtual environment:
 ```bash
 python -m venv venv
 # On Windows:
@@ -65,23 +67,29 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Run the Streamlit App
+### 3. Run the App
+
+**Streamlit Web Interface:**
 ```bash
 streamlit run app.py
 ```
-Open your browser at `http://localhost:8501`.
+
+**Jupyter Notebook Interface:**
+```bash
+jupyter notebook main.ipynb
+```
 
 ---
 
 ## 📁 Repository Structure
 
 ```
+├── main.ipynb          # Main Jupyter Notebook implementation
 ├── app.py              # Streamlit Web Application interface
-├── rag.py              # RAG Pipeline (PDF loading, FAISS vector index, FLAN-T5 QA)
+├── rag.py              # RAG Pipeline with persistent FAISS vector storage
 ├── requirements.txt    # Python dependencies optimized for CPU execution
 ├── README.md           # Project documentation
-├── .gitignore          # Git ignore rules for cache & virtual environments
-└── .devcontainer/      # VS Code Dev Container configuration
+└── .gitignore          # Git ignore rules
 ```
 
 ---

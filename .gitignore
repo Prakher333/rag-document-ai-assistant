@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Vector store cache
+vector_store/
+
 # Caches and temporary files
 .pytest_cache/
 .mypy_cache/
